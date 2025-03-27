@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import OtpInput from 'react-otp-input';
 import { useDispatch } from 'react-redux';
 import { regsiterWorker } from '../../../store/actions/stationActions';
+import { postCamera } from '../../../store/actions/tollActions';
 
 export default function AddCamera({
     setShow
@@ -44,7 +45,7 @@ export default function AddCamera({
                             onChange={(e) => setName(e.target.value)}
                             required
                             className="w-full px-5 py-3 mt-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg"
-                            placeholder="Enter worker name"
+                            placeholder="Enter camera name"
                         />
                     </div>
                     <div>
@@ -52,7 +53,7 @@ export default function AddCamera({
                             camera IP
                         </label>
                         <input
-                            type="number"
+                            type="text"
                             id="phone"
                             value={ip}
                             onChange={(e) => setIp(e.target.value)}
@@ -86,11 +87,11 @@ export default function AddCamera({
                         class="px-4 py-2 rounded-lg text-gray-800 text-sm border-none outline-none tracking-wide bg-gray-200 hover:bg-gray-300 active:bg-gray-200">Close</button>
                     <button
                         onClick={() => {
-                            // dispatch(regsiterWorker({
-                            //     name: name,
-                            //     phone_number: phone,
-                            //     otp: password,
-                            // }, setLoading))
+                            const formData = new FormData();
+                            formData.append('name', name);
+                            formData.append('camera_ip', ip);
+                            formData.append('camera_location', location);
+                            dispatch(postCamera(formData))
                         }}
                         type="button"
                         class="px-4 py-2 rounded-lg text-white text-sm border-none outline-none tracking-wide bg-blue-600 hover:bg-blue-700 active:bg-blue-600">

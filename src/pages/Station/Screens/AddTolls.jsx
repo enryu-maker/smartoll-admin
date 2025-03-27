@@ -2,13 +2,16 @@ import React, { useState } from 'react'
 import OtpInput from 'react-otp-input';
 import { useDispatch, useSelector } from 'react-redux';
 import { regsiterWorker } from '../../../store/actions/stationActions';
+import { postToll } from '../../../store/actions/tollActions';
 
 export default function AddTolls({
     setShow
 }) {
     const [name, setName] = useState('');
-    const [ip, setIp] = useState('');
+    const [latitude, setLatitude] = useState('');
+    const [longitude, setLongitude] = useState('');
     const [location, setLocation] = useState('');
+    const [camera_ip, setCameraIp] = useState('');
     const [loading, setLoading] = useState(false);
     const camera = useSelector(state => state.Reducers.camera)
     const dispatch = useDispatch()
@@ -55,8 +58,8 @@ export default function AddTolls({
                         <input
                             type="text"
                             id="name"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
+                            value={latitude}
+                            onChange={(e) => setLatitude(e.target.value)}
                             required
                             className="w-full px-5 py-3 mt-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg"
                             placeholder="Enter toll Latitude"
@@ -69,8 +72,8 @@ export default function AddTolls({
                         <input
                             type="text"
                             id="name"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
+                            value={longitude}
+                            onChange={(e) => setLongitude(e.target.value)}
                             required
                             className="w-full px-5 py-3 mt-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg"
                             placeholder="Enter toll Longitude"
@@ -83,8 +86,8 @@ export default function AddTolls({
                         <input
                             type="text"
                             id="phone"
-                            value={ip}
-                            onChange={(e) => setIp(e.target.value)}
+                            value={location}
+                            onChange={(e) => setLocation(e.target.value)}
                             required
                             className="w-full px-5 py-3 mt-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg"
                             placeholder="Enter toll location"
@@ -94,11 +97,20 @@ export default function AddTolls({
                         <label htmlFor="phone" className="block text-lg font-semibold text-gray-700">
                             Camera
                         </label>
-                        <select name="camera" id="camera" className="w-full px-5 py-3 mt-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg">
-                            {camera.map((cam, index) => (
-                                <option key={index} value={cam.id}>{cam.name}</option>
+                        <select
+                            onChange={(e) => setCameraIp(e.target.value)}
+                            name="camera"
+                            id="camera"
+                            className="w-full px-5 py-3 mt-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg"
+                        >
+                            <option value="">Select a Camera</option> {/* Default placeholder */}
+                            {camera?.map((cam, index) => (
+                                <option key={cam.id || index} value={cam.id}>
+                                    {cam.name}
+                                </option>
                             ))}
                         </select>
+
 
                     </div>
                 </div>
@@ -112,11 +124,14 @@ export default function AddTolls({
                         class="px-4 py-2 rounded-lg text-gray-800 text-sm border-none outline-none tracking-wide bg-gray-200 hover:bg-gray-300 active:bg-gray-200">Close</button>
                     <button
                         onClick={() => {
-                            // dispatch(regsiterWorker({
-                            //     name: name,
-                            //     phone_number: phone,
-                            //     otp: password,
-                            // }, setLoading))
+                            // console.log(name, latitude, longitude, location, camera_ip)
+                            const formData = new FormData();
+                            formData.append('name', name);
+                            formData.append('latitude', latitude);
+                            formData.append('longitude', longitude);
+                            formData.append('location', location);
+                            formData.append('camera_id', camera_ip);
+                            dispatch(postToll(formData))
                         }}
                         type="button"
                         class="px-4 py-2 rounded-lg text-white text-sm border-none outline-none tracking-wide bg-blue-600 hover:bg-blue-700 active:bg-blue-600">

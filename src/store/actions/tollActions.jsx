@@ -93,7 +93,11 @@ export const getCameras = () => {
 export const postCamera = (data) => {
     return async (dispatch) => {
         try {
-            await axiosIns.post('v1/toll/add-camera/', data)
+            await axiosIns.post('v1/toll/add-camera/', data, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
                 .then((res) => {
                     dispatch(getCameras())
                     toast.success(res?.data?.message || "Camera added successfully", {
