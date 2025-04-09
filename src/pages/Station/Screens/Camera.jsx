@@ -1,16 +1,25 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import AddCamera from './AddCamera';
+import ViewFeed from './ViewFeed';
+import { getFeed } from '../../../store/actions/tollActions';
 
 export default function Camera() {
     const [show, setShow] = React.useState(false);
+    const [show1, setShow1] = React.useState(false);
+    const [current, setCurrent] = React.useState({});
+    const dispatch = useDispatch()
+    const [url, setUrl] = React.useState(null)
     const cameras = useSelector(state => state.Reducers.camera)
-    console.log(cameras)
     return (
         <div className="font-Poppins">
             {
                 show &&
                 <AddCamera setShow={setShow} />
+            }
+            {
+                show1 &&
+                <ViewFeed setShow={setShow1} url={url} />
             }
             <div className="flex justify-between items-center">
                 <h2 className="text-2xl py-6 px-2 font-bold">Camera</h2>
@@ -41,6 +50,16 @@ export default function Camera() {
                                         {goals[key]}
                                     </td>
                                 ))}
+                                <td className="px-4 py-2">
+                                    <button
+                                        onClick={() => {
+                                            console.log("hello")
+                                            dispatch(getFeed(goals.camera_ip, goals.camera_port, setUrl, setShow1))
+                                        }}
+                                        className="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-all">
+                                        View
+                                    </button>
+                                </td>
                             </tr>
                         ))}
                     </tbody>

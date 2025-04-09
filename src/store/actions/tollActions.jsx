@@ -207,3 +207,22 @@ export const postToll = (data) => {
 
 
 
+export const getFeed = (ip, port, setURL, setShow1) => {
+    return async (dispatch) => {
+        try {
+            await axiosIns.get(`v1/stream/start_stream/?rtsp_url=rtsp://admin:123456@${ip}:${port}/stream1&stream_name=stream1`)
+                .then((res) => {
+                    console.log(res.data)
+                    setURL(res?.data?.hls_url)
+                    setShow1(true)
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        } catch (error) {
+            console.log(error);
+        }
+    };
+}
+
+

@@ -9,6 +9,7 @@ export default function AddCamera({
 }) {
     const [name, setName] = useState('');
     const [ip, setIp] = useState('');
+    const [port, setPort] = useState('');
     const [location, setLocation] = useState('');
     const [loading, setLoading] = useState(false);
     const dispatch = useDispatch()
@@ -64,6 +65,20 @@ export default function AddCamera({
                     </div>
                     <div>
                         <label htmlFor="phone" className="block text-lg font-semibold text-gray-700">
+                            Port
+                        </label>
+                        <input
+                            type="text"
+                            id="phone"
+                            value={port}
+                            onChange={(e) => setPort(e.target.value)}
+                            required
+                            className="w-full px-5 py-3 mt-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg"
+                            placeholder="Enter camera port"
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="phone" className="block text-lg font-semibold text-gray-700">
                             camera Location
                         </label>
                         <input
@@ -91,6 +106,7 @@ export default function AddCamera({
                             formData.append('name', name);
                             formData.append('camera_ip', ip);
                             formData.append('camera_location', location);
+                            formData.append('camera_port', port);
                             dispatch(postCamera(formData))
                         }}
                         type="button"
