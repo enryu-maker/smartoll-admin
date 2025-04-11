@@ -2,11 +2,11 @@ import axios from 'axios'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
-export const baseURL = 'http://103.194.228.109:8000/'
+export const baseURL = 'http://127.0.0.1:8000/'
 
 let headers = {}
 const axiosIns = axios.create({
-    baseURL: 'http://103.194.228.109:8000/',
+    baseURL: 'http://127.0.0.1:8000/',
     headers
 })
 

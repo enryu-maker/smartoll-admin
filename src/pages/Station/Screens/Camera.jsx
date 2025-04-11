@@ -32,38 +32,15 @@ export default function Camera() {
             </div>
 
             <div className="overflow-x-auto">
-                <table className="min-w-full table-auto text-left rounded text-sm text-gray-500">
-                    <thead className="bg-gray-100 text-xs uppercase text-gray-700">
-                        <tr>
-                            {cameras.length > 0 && Object.keys(cameras[0]).map(key => (
-                                <th key={key} className="px-6 py-3 text-start">
-                                    {key.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase())}
-                                </th>
-                            ))}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {cameras.map((goals, index) => (
-                            <tr key={index} className="border-b bg-white hover:bg-gray-50">
-                                {Object.keys(goals).map(key => (
-                                    <td key={key} className="px-4 py-2">
-                                        {goals[key]}
-                                    </td>
-                                ))}
-                                <td className="px-4 py-2">
-                                    <button
-                                        onClick={() => {
-                                            console.log("hello")
-                                            dispatch(getFeed(goals.camera_ip, goals.camera_port, setUrl, setShow1))
-                                        }}
-                                        className="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-all">
-                                        View
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+                {cameras.map((goals, index) => (
+                    <iframe
+                        key={index}
+                        src={goals.camera_url}
+                        className="w-full h-64"
+                        allowFullScreen
+                        title={goals.camera_location}
+                    ></iframe>
+                ))}
             </div>
         </div>
     )
