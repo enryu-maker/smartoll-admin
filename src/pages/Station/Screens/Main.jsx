@@ -1,53 +1,118 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts'; // Example for pie chart
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer as ResponsiveLineChart } from 'recharts'; // Example for line chart
+import {
+    PieChart, Pie, Cell, Tooltip as PieTooltip,
+    BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
+    ResponsiveContainer
+} from 'recharts';
 import { getData } from '../../../store/actions/tollActions';
 
+const COLORS = ['#8884d8', '#82ca9d', '#ffc658'];
+
 export default function Main() {
-    const customer = useSelector(state => state.Reducers.customer)
-    const dispatch = useDispatch()
-    const [data, setData] = React.useState({})
-    React.useEffect(() => {
-        dispatch(getData(setData))
-    }, [dispatch])
-    console.log(data)
+    const customer = useSelector(state => state.Reducers.customer);
+    const expense = useSelector(state => state.Reducers.expense);
+    const dispatch = useDispatch();
+    const [data, setData] = useState({});
+
+    useEffect(() => {
+        dispatch(getData(setData));
+    }, [dispatch]);
+
+    const pieData = [
+        { name: 'Total Tolls', value: data?.total_tolls?.length || 0 },
+        { name: 'Total Customers', value: customer?.length || 0 },
+    ];
+
+    const totalIncome = data?.total_income || 0;
+    const totalExpenses = expense?.reduce((acc, curr) => acc + (curr.amount || 0), 0);
+
+    const barData = [
+        {
+            name: 'Amount',
+            Revenue: totalIncome,
+            Expenses: totalExpenses,
+        },
+    ];
+
     return (
-        <div className='font-Poppins'>
-            <h3 className="text-3xl py-5 px-2 font-semibold mt-2 text-gray-700">Dashboard Overview</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {/* Card 1: Total Booking */}
-                <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition">
-                    <h3 className="text-lg font-medium text-gray-700">Total Tolls</h3>
-                    <p className="text-3xl font-bold text-blue-600">{data?.total_tolls?.length}</p>
-                </div>
+        <div className="font-Poppins p-4 bg-gray-50 min-h-screen">
+            <h3 className="text-4xl font-bold mb-6 text-gray-800">Dashboard Overview</h3>
 
-                {/* Card 2: Available Workers */}
-                <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition">
-                    <h3 className="text-lg font-medium text-gray-700">Total Cutomer</h3>
-                    <p className="text-3xl font-bold text-yellow-600">{customer?.length}</p>
+            {/* Stat Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div className="bg-white p-6 rounded-2xl shadow-md border-t-4 border-blue-500">
+                    <h4 className="text-gray-600 text-lg">Total Tolls</h4>
+                    <p className="text-3xl font-bold text-blue-600">
+                        {data?.total_tolls?.length || 0}
+                    </p>
                 </div>
-
-                {/* Card 3: Revenue */}
-                <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition">
-                    <h3 className="text-lg font-medium text-gray-700">Revenue</h3>
-                    <p className="text-3xl font-bold text-indigo-600">₹{data?.total_income}</p>
+                <div className="bg-white p-6 rounded-2xl shadow-md border-t-4 border-yellow-400">
+                    <h4 className="text-gray-600 text-lg">Total Customers</h4>
+                    <p className="text-3xl font-bold text-yellow-600">
+                        {customer?.length || 0}
+                    </p>
+                </div>
+                <div className="bg-white p-6 rounded-2xl shadow-md border-t-4 border-indigo-600">
+                    <h4 className="text-gray-600 text-lg">Revenue</h4>
+                    <p className="text-3xl font-bold text-indigo-600">
+                        ₹{Number(totalIncome).toLocaleString()}
+                    </p>
+                </div>
+                <div className="bg-white p-6 rounded-2xl shadow-md border-t-4 border-red-500">
+                    <h4 className="text-gray-600 text-lg">Total Expenses</h4>
+                    <p className="text-3xl font-bold text-red-500">
+                        ₹{Number(totalExpenses).toLocaleString()}
+                    </p>
                 </div>
             </div>
 
-            {/* Latest Bookings */}
-            <h3 className="text-3xl py-5 px-2 font-semibold mt-2 text-gray-700">Latest Tolls</h3>
-            <div className="bg-white p-6 rounded-lg shadow-lg">
-                {/* <ul className="space-y-4">
-                    {order?.map((item, index) => (
-                        <li key={index} className="flex justify-between items-center">
-                            <span className="font-medium">by {item?.user_name}</span>
-                            <span className="text-xl font-semibold">₹{item?.amount}</span>
-                            <span className="text-xl font-semibold">{item?.status}</span>
-                            <span className="text-gray-600 text-sm">{item?.order_id}</span>
-                        </li>
-                    ))}
-                </ul> */}
+            {/* Charts Section */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+                {/* Pie Chart */}
+                <div className="bg-white rounded-2xl shadow-md p-6">
+                    <h4 className="text-xl font-semibold text-gray-700 mb-4">System Overview</h4>
+                    <ResponsiveContainer width="100%" height={300}>
+                        <PieChart>
+                            <Pie
+                                data={pieData}
+                                dataKey="value"
+                                nameKey="name"
+                                cx="50%"
+                                cy="50%"
+                                outerRadius={100}
+                                label
+                            >
+                                {pieData.map((entry, index) => (
+                                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                ))}
+                            </Pie>
+                            <PieTooltip />
+                        </PieChart>
+                    </ResponsiveContainer>
+                </div>
+
+                {/* Bar Chart */}
+                <div className="bg-white rounded-2xl shadow-md p-6">
+                    <h4 className="text-xl font-semibold text-gray-700 mb-4">Revenue vs Expenses</h4>
+                    <ResponsiveContainer width="100%" height={300}>
+                        <BarChart data={barData}>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="name" />
+                            <YAxis />
+                            <Tooltip />
+                            <Legend />
+                            <Bar dataKey="Revenue" fill="#4ade80" />
+                            <Bar dataKey="Expenses" fill="#f87171" />
+                        </BarChart>
+                    </ResponsiveContainer>
+                </div>
+            </div>
+
+            {/* Latest Tolls */}
+            <h3 className="text-2xl font-semibold text-gray-700 mb-4">Latest Tolls</h3>
+            <div className="bg-white rounded-2xl shadow-md p-6 text-gray-600">
+                <p className="text-center italic">Coming Soon: Real-time toll data will be shown here.</p>
             </div>
         </div>
     );

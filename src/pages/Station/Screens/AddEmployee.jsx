@@ -1,21 +1,28 @@
 import React, { useState } from 'react';
+import { postEmployees } from '../../../store/actions/tollActions';
 import { useDispatch } from 'react-redux';
-import { postCamera } from '../../../store/actions/tollActions';
 
-export default function AddCamera({ setShow }) {
+export default function AddEmployee({ setShow }) {
     const [name, setName] = useState('');
-    const [ip, setIp] = useState('');
-    const [port, setPort] = useState('');
-    const [location, setLocation] = useState('');
-    const [url, setUrl] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [role, setRole] = useState('');
     const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
+    const handleSubmit = () => {
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('number', email);
+        formData.append('password', password);
+        setLoading(true);
+        dispatch(postEmployees(formData, setLoading));
+    };
 
     return (
         <div className="fixed inset-0 flex justify-center items-center z-50 bg-black bg-opacity-50 overflow-auto font-Poppins">
             <div className="w-full max-w-lg bg-white rounded-lg shadow-lg p-6 relative">
                 <div className="flex items-center justify-between pb-4 border-b border-gray-300">
-                    <h3 className="text-gray-800 text-xl font-semibold">Add Camera</h3>
+                    <h3 className="text-gray-800 text-xl font-semibold">Add Employee</h3>
                     <svg
                         onClick={() => setShow(false)}
                         xmlns="http://www.w3.org/2000/svg"
@@ -31,9 +38,9 @@ export default function AddCamera({ setShow }) {
                     </svg>
                 </div>
 
-                <div className="space-y-5 mt-4">
+                <div className="space-y-6 mt-4">
                     <div>
-                        <label htmlFor="name" className="block text-lg font-semibold text-gray-700">Name</label>
+                        <label htmlFor="name" className="block text-lg font-semibold text-gray-700">Employee Name</label>
                         <input
                             type="text"
                             id="name"
@@ -41,55 +48,31 @@ export default function AddCamera({ setShow }) {
                             onChange={(e) => setName(e.target.value)}
                             required
                             className="w-full px-4 py-3 mt-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg"
-                            placeholder="Enter camera name"
+                            placeholder="Enter employee name"
                         />
                     </div>
                     <div>
-                        <label htmlFor="ip" className="block text-lg font-semibold text-gray-700">Camera IP</label>
+                        <label htmlFor="email" className="block text-lg font-semibold text-gray-700">Employee Email</label>
                         <input
-                            type="text"
-                            id="ip"
-                            value={ip}
-                            onChange={(e) => setIp(e.target.value)}
+                            type="email"
+                            id="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                             required
                             className="w-full px-4 py-3 mt-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg"
-                            placeholder="Enter camera IP"
+                            placeholder="Enter employee number"
                         />
                     </div>
                     <div>
-                        <label htmlFor="port" className="block text-lg font-semibold text-gray-700">Port</label>
+                        <label htmlFor="password" className="block text-lg font-semibold text-gray-700">Password</label>
                         <input
-                            type="text"
-                            id="port"
-                            value={port}
-                            onChange={(e) => setPort(e.target.value)}
+                            type="password"
+                            id="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
                             required
                             className="w-full px-4 py-3 mt-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg"
-                            placeholder="Enter camera port"
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="location" className="block text-lg font-semibold text-gray-700">Camera Location</label>
-                        <input
-                            type="text"
-                            id="location"
-                            value={location}
-                            onChange={(e) => setLocation(e.target.value)}
-                            required
-                            className="w-full px-4 py-3 mt-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg"
-                            placeholder="Enter camera location"
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="url" className="block text-lg font-semibold text-gray-700">Camera URL</label>
-                        <input
-                            type="text"
-                            id="url"
-                            value={url}
-                            onChange={(e) => setUrl(e.target.value)}
-                            required
-                            className="w-full px-4 py-3 mt-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg"
-                            placeholder="Enter camera URL"
+                            placeholder="Enter password"
                         />
                     </div>
                 </div>
@@ -103,15 +86,7 @@ export default function AddCamera({ setShow }) {
                         Close
                     </button>
                     <button
-                        onClick={() => {
-                            const formData = new FormData();
-                            formData.append('name', name);
-                            formData.append('camera_ip', ip);
-                            formData.append('camera_location', location);
-                            formData.append('camera_port', port);
-                            formData.append('camera_url', url);
-                            dispatch(postCamera(formData));
-                        }}
+                        onClick={handleSubmit}
                         type="button"
                         className="px-6 py-2 rounded-lg text-white text-sm font-semibold bg-blue-600 hover:bg-blue-700 transition-all"
                     >

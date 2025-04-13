@@ -159,6 +159,149 @@ export const getTolls = () => {
     };
 }
 
+export const getExpenses = () => {
+    return async (dispatch) => {
+        try {
+            await axiosIns.get('v1/toll/get-expense/')
+                .then((res) => {
+                    dispatch({
+                        type: 'GET_EXPENSES',
+                        payload: res.data
+                    })
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        } catch (error) {
+            console.log(error);
+        }
+    };
+}
+
+export const postExpense = (data, setLoading) => {
+    setLoading(true)
+    return async (dispatch) => {
+        try {
+            await axiosIns.post('v1/toll/add-expense/', data)
+                .then((res) => {
+                    dispatch(getExpenses())
+                    toast.success(res?.data?.message || "Expense added successfully", {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
+                    setLoading(false)
+                })
+                .catch((err) => {
+                    console.log(err);
+                    toast.error(err?.response?.data?.message || "Something went wrong!", {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
+                    setLoading(false)
+
+                });
+        } catch (error) {
+            console.log(error);
+            toast.error(error?.response?.data?.message || "An error occurred during login.", {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+            setLoading(false)
+        }
+    };
+}
+
+
+export const getEmployees = () => {
+    return async (dispatch) => {
+        try {
+            await axiosIns.get('v1/toll/get-employee/')
+                .then((res) => {
+                    dispatch({
+                        type: 'GET_EMPLOYEES',
+                        payload: res.data
+                    })
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        } catch (error) {
+
+            console.log(error);
+        }
+    }
+}
+
+export const postEmployees = (data, setLoading) => {
+    setLoading(true)
+    return async (dispatch) => {
+        try {
+            await axiosIns.post('v1/toll/add-employee/', data)
+                .then((res) => {
+                    dispatch(getEmployees())
+                    toast.success(res?.data?.message || "employee added successfully", {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
+                    setLoading(false)
+                })
+                .catch((err) => {
+                    console.log(err);
+                    toast.error(err?.response?.data?.message || "Something went wrong!", {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
+                    setLoading(false)
+
+                });
+        } catch (error) {
+            console.log(error);
+            toast.error(error?.response?.data?.message || "An error occurred during login.", {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+            setLoading(false)
+        }
+    };
+}
+
+
 export const postToll = (data) => {
     return async (dispatch) => {
         try {
@@ -223,6 +366,71 @@ export const getFeed = (ip, port, setURL, setShow1) => {
             console.log(error);
         }
     };
+}
+
+export const getAllVehicle = () => {
+    return async (dispatch) => {
+        try {
+            await axiosIns.get('v1/user/all-vehicles/')
+                .then((res) => {
+                    dispatch({
+                        type: 'GET_VEHICLES',
+                        payload: res.data
+                    })
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        } catch (error) {
+            console.log(error);
+        }
+    };
+}
+
+export const getUnauthorizedVehicle = () => {
+    return async (dispatch) => {
+        try {
+            await axiosIns.get('unauthorized-vehicles/')
+                .then((res) => {
+                    dispatch({
+                        type: 'GET_UNAUTHORIZED',
+                        payload: res.data
+                    })
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        } catch (error) {
+            console.log(error);
+        }
+    };
+}
+
+export const deleteVehicel = (id) => {
+    return async (dispatch) => {
+        try {
+            await axiosIns.delete(`v1/user/vehicle/${id}`)
+                .then((res) => {
+                    dispatch(getAllVehicle())
+                    toast.success(res?.data?.message || "Vehicle deleted successfully", {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        } catch (error) {
+
+            console.log(error);
+        }
+    }
 }
 
 

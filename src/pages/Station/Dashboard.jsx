@@ -3,9 +3,14 @@ import StationSidebar from './components/StationSidebar'
 import { ThreeDots } from 'react-loader-spinner';
 import { useDispatch } from 'react-redux';
 import Camera from './Screens/Camera';
-import { getCameras, getTolls } from '../../store/actions/tollActions';
+import { getCameras, getEmployees, getExpenses, getTolls, getUnauthorizedVehicle } from '../../store/actions/tollActions';
 import Tolls from './Screens/Tolls';
-import { getCustomer, getVehicle } from '../../store/actions/customerAction';
+import { getallWallet, getCustomer, getVehicle } from '../../store/actions/customerAction';
+import Employee from './Screens/Employee';
+import Expenses from './Screens/Expenses';
+import Ownership from './Screens/Ownership';
+import WalletM from './Screens/WalletM';
+import Unauthorized from './Screens/Unauthorized';
 const Main = lazy(() => import('./Screens/Main'));
 const Worker = lazy(() => import('./Screens/Worker'));
 const Customers = lazy(() => import('./Screens/Customers'));
@@ -26,10 +31,20 @@ export default function SDashboard() {
                 return <Camera />;
             case 'toll':
                 return <Tolls />;
+            case 'employee':
+                return <Employee />;
+            case 'expenses':
+                return <Expenses />;
             case 'customer':
                 return <Customers />;
+            case 'ownership':
+                return <Ownership />;
+            case 'walletm':
+                return <WalletM />;
             case 'vehicle':
                 return <Vehicle />;
+            case 'unauthorized':
+                return <Unauthorized />;
             case 'worker':
                 return <Worker />;
             default:
@@ -42,6 +57,10 @@ export default function SDashboard() {
         dispatch(getTolls())
         dispatch(getCustomer())
         dispatch(getVehicle())
+        dispatch(getEmployees())
+        dispatch(getExpenses())
+        dispatch(getallWallet())
+        dispatch(getUnauthorizedVehicle())
     }, [dispatch])
     return (
         <div className="w-[100vw] flex justify-between bg-slate-50">
