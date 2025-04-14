@@ -371,7 +371,7 @@ export const getFeed = (ip, port, setURL, setShow1) => {
 export const getAllVehicle = () => {
     return async (dispatch) => {
         try {
-            await axiosIns.get('v1/user/all-vehicles/')
+            await axiosIns.get('v1/user/all-vehicles')
                 .then((res) => {
                     dispatch({
                         type: 'GET_VEHICLES',
@@ -390,7 +390,7 @@ export const getAllVehicle = () => {
 export const getUnauthorizedVehicle = () => {
     return async (dispatch) => {
         try {
-            await axiosIns.get('unauthorized-vehicles/')
+            await axiosIns.get('unauthorized-vehicles')
                 .then((res) => {
                     dispatch({
                         type: 'GET_UNAUTHORIZED',
