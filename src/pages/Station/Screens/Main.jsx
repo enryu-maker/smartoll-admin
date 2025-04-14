@@ -12,6 +12,10 @@ const COLORS = ['#8884d8', '#82ca9d', '#ffc658'];
 export default function Main() {
     const customer = useSelector(state => state.Reducers.customer);
     const expense = useSelector(state => state.Reducers.expense);
+    const unauthorized = useSelector(state => state.Reducers.unauthorized);
+    const vehicle = useSelector(state => state.Reducers.vehicle);
+    const tolls = useSelector(state => state.Reducers.toll);
+    const cameras = useSelector(state => state.Reducers.camera);
     const dispatch = useDispatch();
     const [data, setData] = useState({});
 
@@ -32,6 +36,22 @@ export default function Main() {
             name: 'Amount',
             Revenue: totalIncome,
             Expenses: totalExpenses,
+        },
+    ];
+
+    const vehicleData = [
+        {
+            name: 'Vehicle',
+            Authorized: vehicle?.length || 0,
+            UnAuthorized: unauthorized?.length || 0,
+        },
+    ];
+
+    const tollData = [
+        {
+            name: 'Toll vs Camera',
+            Tolls: tolls?.length || 0,
+            Cameras: cameras?.length || 0,
         },
     ];
 
@@ -104,6 +124,38 @@ export default function Main() {
                             <Legend />
                             <Bar dataKey="Revenue" fill="#4ade80" />
                             <Bar dataKey="Expenses" fill="#f87171" />
+                        </BarChart>
+                    </ResponsiveContainer>
+                </div>
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+                <div className="bg-white rounded-2xl shadow-md p-6">
+                    <h4 className="text-xl font-semibold text-gray-700 mb-4">UnAuthorized vs Authorized</h4>
+                    <ResponsiveContainer width="100%" height={300}>
+                        <BarChart data={vehicleData}>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="name" />
+                            <YAxis />
+                            <Tooltip />
+                            <Legend />
+                            <Bar dataKey="UnAuthorized" fill="#f87171" />
+                            <Bar dataKey="Authorized" fill="#4ade80" />
+                        </BarChart>
+                    </ResponsiveContainer>
+                </div>
+
+                {/* Bar Chart */}
+                <div className="bg-white rounded-2xl shadow-md p-6">
+                    <h4 className="text-xl font-semibold text-gray-700 mb-4">Tolls vs Cameras</h4>
+                    <ResponsiveContainer width="100%" height={300}>
+                        <BarChart data={tollData}>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="name" />
+                            <YAxis />
+                            <Tooltip />
+                            <Legend />
+                            <Bar dataKey="Tolls" fill="#4ade80" />
+                            <Bar dataKey="Cameras" fill="#f87171" />
                         </BarChart>
                     </ResponsiveContainer>
                 </div>
