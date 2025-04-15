@@ -182,7 +182,7 @@ export const postExpense = (data, setLoading) => {
     setLoading(true)
     return async (dispatch) => {
         try {
-            await axiosIns.post('v1/toll/add-expense/', data)
+            await axiosIns.post('v1/toll/add-expense', data)
                 .then((res) => {
                     dispatch(getExpenses())
                     toast.success(res?.data?.message || "Expense added successfully", {
