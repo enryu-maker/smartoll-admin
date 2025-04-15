@@ -27,7 +27,7 @@ export const getCustomer = () => {
 export const getVehicle = () => {
     return async (dispatch) => {
         try {
-            await axiosIns.get('v1/user/all-vehicles/')
+            await axiosIns.get('v1/user/all-vehicles')
                 .then((res) => {
                     dispatch({
                         type: 'GET_VEHICLES',
