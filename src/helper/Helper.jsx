@@ -3,14 +3,14 @@ import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 // export const baseURL = 'http://127.0.0.1:8000/';
-export const baseURL = 'https://backend.gwsweb.co.in/';
+export const baseURL = 'https://api.gwsweb.co.in/';
 
 
 
 let headers = {}
 const axiosIns = axios.create({
     // baseURL: 'http://127.0.0.1:8000/',
-    baseURL: 'https://backend.gwsweb.co.in/',
+    baseURL: 'https://api.gwsweb.co.in/',
     headers
 })
 
